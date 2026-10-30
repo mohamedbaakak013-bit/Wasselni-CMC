@@ -31,7 +31,7 @@ export const BoardingPassModal: React.FC<BoardingPassModalProps> = ({ pass, onCl
     soundManager.playClick();
     if (navigator.clipboard) {
       navigator.clipboard.writeText(
-        `Wasselni CMC Pass: ${pass.ticketId} | Trajet: ${pass.origin} ➔ ${pass.destination} | Départ: ${pass.departureTime}`
+        `Wcmc Pass: ${pass.ticketId} | Trajet: ${pass.origin} ➔ ${pass.destination} | Départ: ${pass.departureTime}`
       );
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);

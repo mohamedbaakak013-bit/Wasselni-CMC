@@ -48,7 +48,7 @@ export const FounderModal: React.FC<FounderModalProps> = ({ isOpen, onClose }) =
             <strong className="text-white">Le Défi :</strong> Située à Mghila à plus de 7 kilomètres du centre de Béni Mellal, la CMC représente l'excellence de la formation professionnelle marocaine. Pourtant, les étudiants faisaient face quotidiennement à des grands taxis onéreux (15 à 20 MAD la course) ou des trajets aléatoires.
           </p>
           <p>
-            <strong className="text-emerald-400">La Vision Wasselni :</strong> Nous avons imaginé une plateforme à l'intersection du spatial design, de la mutualisation urbaine et de la dignité étudiante. Un tarif unique et solidaire de <strong>5 MAD</strong>, sans commission abusive.
+            <strong className="text-emerald-400">La Vision Wcmc :</strong> Nous avons imaginé une plateforme à l'intersection du spatial design, de la mutualisation urbaine et de la dignité étudiante. Un tarif unique et solidaire de <strong>5 MAD</strong>, sans commission abusive.
           </p>
         </div>
 

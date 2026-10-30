@@ -276,64 +276,24 @@ export default function App() {
       {/* 2. Top Header Navigation */}
       <header className="relative z-30 max-w-6xl mx-auto px-4 sm:px-6 pt-5 pb-3">
         <div className="flex items-center justify-between">
-          {/* Logo & Platform Tagline */}
-          <div className="flex items-center gap-3">
+          {/* Logo & Platform Brand: Wcmc */}
+          <div className="flex items-center gap-2.5">
             <div className="relative group cursor-pointer" onClick={() => setIsFounderModalOpen(true)}>
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 flex items-center justify-center font-black text-black text-lg sm:text-xl shadow-[0_0_25px_rgba(16,185,129,0.5)] border border-emerald-200/40">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 flex items-center justify-center font-black text-black text-xl shadow-[0_0_20px_rgba(16,185,129,0.5)] border border-emerald-200/40">
                 W
               </div>
               <div className="absolute -inset-1 rounded-2xl bg-emerald-400/30 blur-sm group-hover:opacity-100 opacity-0 transition-opacity" />
             </div>
 
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white font-heading">
-                  WASSELNI <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">CMC</span>
-                </h1>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-mono font-bold hidden sm:inline">
-                  2026 EDITION
-                </span>
-              </div>
-              <p className="text-[11px] text-white/60 font-mono flex items-center gap-1.5">
-                <span>Béni Mellal</span>
-                <span className="text-white/30">➔</span>
-                <span className="text-emerald-400 font-semibold">Campus CMC Mghila</span>
-              </p>
-            </div>
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white font-heading">
+              W<span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">cmc</span>
+            </h1>
           </div>
 
-          {/* Quick Header Actions */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* Single-File / Standalone Export Button */}
-            <button
-              onClick={() => {
-                soundManager.playClick();
-                setIsExportModalOpen(true);
-              }}
-              className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/80 hover:text-white border border-white/10 text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer"
-              title="Exporter en un seul fichier HTML autonome"
-            >
-              <FileCode className="w-3.5 h-3.5 text-cyan-400" />
-              <span className="hidden md:inline">Fichier Unique</span>
-            </button>
-
-            {/* Founder Story Button */}
-            <button
-              onClick={() => {
-                soundManager.playClick();
-                setIsFounderModalOpen(true);
-              }}
-              className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 hover:from-emerald-500/20 hover:to-cyan-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="hidden sm:inline">Mohamed &amp; Doaa</span>
-            </button>
-
-            {/* Wallet Quick Pill */}
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/60 border border-white/10 text-xs font-mono">
-              <span className="text-white/50">Solde:</span>
-              <strong className="text-emerald-400 font-bold">{balance} MAD</strong>
-            </div>
+          {/* Right: Clean Wallet Quick Pill */}
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-black/60 border border-white/10 text-xs font-mono shadow-sm">
+            <span className="text-white/50">Solde:</span>
+            <strong className="text-emerald-400 font-bold">{balance} MAD</strong>
           </div>
         </div>
       </header>
