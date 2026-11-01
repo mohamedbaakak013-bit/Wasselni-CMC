@@ -105,7 +105,7 @@ export const DynamicIslandNav: React.FC<DynamicIslandNavProps> = ({
       >
         <Sparkles className="w-3 h-3 text-cyan-400 group-hover:text-emerald-400 transition-colors" />
         <span className="font-mono tracking-wide">
-          Architected by <strong className="text-white font-semibold">Mohamed &amp; Doaa</strong> ✦ CMC 2026
+          Architected by <strong className="text-white font-semibold">Baakak</strong> ✦ CMC 2026
         </span>
       </button>
     </div>

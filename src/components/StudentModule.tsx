@@ -57,7 +57,7 @@ export const StudentModule: React.FC<StudentModuleProps> = ({
       </div>
 
       {/* Vertical list of available drivers */}
-      <div className="space-y-2 max-h-[220px] overflow-y-auto pr-0.5">
+      <div className="space-y-2 max-h-[220px] md:max-h-[300px] lg:max-h-[380px] overflow-y-auto pr-0.5">
         {rides.map((ride) => {
           const isSelected = ride.id === (currentRide?.id || '');
           return (

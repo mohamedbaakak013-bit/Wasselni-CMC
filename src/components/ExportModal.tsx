@@ -83,7 +83,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({ isOpen, onClose }) => 
       <button onclick="switchMode('navette')" id="btn-navette" class="px-4 py-2 rounded-full text-xs font-bold text-white/70">🚕 Navette</button>
       <button onclick="switchMode('conducteur')" id="btn-conducteur" class="px-4 py-2 rounded-full text-xs font-bold text-white/70">🚘 Conducteur</button>
     </div>
-    <div class="mt-2 text-[11px] font-mono text-white/60">Architected by Mohamed &amp; Doaa ✦ CMC 2026</div>
+    <div class="mt-2 text-[11px] font-mono text-white/60">Architected by Baakak ✦ CMC 2026</div>
   </div>
 
   <script>

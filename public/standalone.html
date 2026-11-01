@@ -29,107 +29,72 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-0 sm:p-4">
+<body class="min-h-screen flex flex-col bg-[#F3F4F6]">
 
-  <!-- Centered Clean Mobile Viewport -->
-  <div class="w-full max-w-md min-h-screen sm:min-h-[844px] bg-white relative sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col justify-between border-0 sm:border border-gray-200">
-    
-    <!-- Top Floating Header over Map -->
-    <div class="absolute top-4 left-4 right-4 z-20 flex items-center justify-between">
-      <div class="bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-md border border-gray-200/80 flex items-center gap-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-black"></span>
-        <span class="text-xs font-extrabold tracking-tight text-black">Wasselni CMC</span>
+  <!-- Global Webapp Navigation Bar -->
+  <header class="w-full bg-white border-b border-gray-200 px-4 sm:px-6 py-3 flex items-center justify-between sticky top-0 z-30 shadow-xs">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-black text-white flex items-center justify-center font-black text-lg shadow-sm">
+        W
       </div>
-
-      <div class="flex items-center gap-1">
-        <button onclick="topUp()" class="bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-md border border-gray-200/80 text-xs font-bold text-black flex items-center gap-1.5 hover:bg-gray-50 cursor-pointer">
-          <span class="text-gray-500 font-medium">Solde:</span>
-          <span id="wallet-balance">25</span> MAD
-          <span class="text-gray-500 font-bold ml-0.5">+</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Top Half: Grayscale Minimalist Map -->
-    <div class="relative w-full h-[320px] bg-[#EAECEF] overflow-hidden select-none border-b border-gray-200">
-      <svg class="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <rect x="0" y="0" width="100" height="100" fill="#EAECEF" />
-        <polygon points="10,10 40,5 35,40 12,35" fill="#E4E7EB" />
-        <polygon points="65,5 95,8 90,30 60,25" fill="#E4E7EB" />
-        <polygon points="15,60 40,55 35,85 10,80" fill="#E4E7EB" />
-        <polygon points="50,65 85,60 80,95 45,90" fill="#E4E7EB" />
-
-        <g stroke="#D1D5DB" stroke-width="0.75" stroke-linecap="round">
-          <line x1="70" y1="10" x2="95" y2="45" />
-          <line x1="60" y1="20" x2="88" y2="60" />
-          <line x1="75" y1="40" x2="98" y2="25" />
-          <line x1="55" y1="65" x2="85" y2="50" />
-          <line x1="20" y1="25" x2="45" y2="80" />
-          <line x1="10" y1="50" x2="50" y2="40" />
-        </g>
-
-        <!-- R312 Crossing Highway -->
-        <line x1="38" y1="8" x2="65" y2="68" stroke="#9CA3AF" stroke-width="1.6" stroke-dasharray="2, 1" />
-        <!-- N8 Highway -->
-        <path d="M 88,18 L 81.5,32.5 L 69.0,44.0 L 65.5,50.0 L 59.5,60.5 L 48.5,77.0" fill="none" stroke="#9CA3AF" stroke-width="1.8" />
-        <!-- Alternative route via N8 -->
-        <path d="M 81.5,32.5 L 69.0,44.0 L 65.5,50.0 L 59.5,60.5 L 54.5,47.0 L 48.0,55.5 L 43.5,62.5 L 42.0,58.5" fill="none" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-        <!-- PRIMARY ACTIVE ROUTE: Deep Black -->
-        <path d="M 81.5,32.5 L 74.0,27.0 L 67.0,24.5 L 59.5,32.0 L 54.5,47.0 L 48.0,55.5 L 43.5,62.5 L 42.0,58.5" fill="none" stroke="#000000" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-
-      <!-- Moving Car Marker -->
-      <div id="car-marker" class="absolute transform -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all duration-100 z-10" style="left: 60%; top: 32%;">
-        <div class="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center shadow-md">
-          <i data-lucide="navigation" class="w-3.5 h-3.5 fill-white rotate-45"></i>
-        </div>
-      </div>
-
-      <!-- Origin Pin: Takadoum -->
-      <div class="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center" style="left: 81.5%; top: 32.5%;">
-        <div class="w-4 h-4 rounded-full bg-black border-2 border-white shadow-md flex items-center justify-center">
-          <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
-        </div>
-        <span class="mt-1 px-1.5 py-0.5 rounded bg-white text-black font-semibold text-[9px] shadow-sm whitespace-nowrap border border-gray-200">Takadoum</span>
-      </div>
-
-      <!-- Destination Pin: CMC Mghila -->
-      <div class="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center" style="left: 42.0%; top: 58.5%;">
-        <div class="w-4 h-4 rounded-sm bg-black border-2 border-white shadow-md flex items-center justify-center">
-          <div class="w-1.5 h-1.5 rounded-sm bg-white"></div>
-        </div>
-        <span class="mt-1 px-1.5 py-0.5 rounded bg-black text-white font-bold text-[9px] shadow-sm whitespace-nowrap">CMC Mghila</span>
-      </div>
-
-      <!-- Duration Badge -->
-      <div class="absolute top-16 left-4 bg-white px-3 py-1.5 rounded-full shadow-md border border-gray-200 flex items-center gap-1.5 text-xs text-black font-semibold z-10">
-        <i data-lucide="clock" class="w-3.5 h-3.5 text-black"></i>
-        <span>12 min · 9.4 km</span>
-      </div>
-    </div>
-
-    <!-- Overlapping White Bottom Sheet -->
-    <div class="flex-1 bg-white rounded-t-3xl shadow-[0_-12px_30px_rgba(0,0,0,0.07)] -mt-6 relative z-20 px-5 pt-3 pb-4 flex flex-col justify-between">
       <div>
-        <!-- Pull Handle -->
-        <div class="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-3"></div>
+        <div class="flex items-center gap-2">
+          <span class="text-base font-extrabold tracking-tight text-black">Wasselni CMC</span>
+          <span class="hidden sm:inline-block text-[11px] font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-700">Béni Mellal</span>
+        </div>
+        <p class="hidden md:block text-xs text-gray-500 font-medium">Plateforme de covoiturage &amp; navettes · Campus CMC Mghila</p>
+      </div>
+    </div>
 
-        <!-- Segmented Control (Role Switcher) -->
-        <div class="bg-[#F3F4F6] p-1 rounded-full flex items-center justify-between mb-4">
-          <button id="tab-etudiant" onclick="switchTab('etudiant')" class="flex-1 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer bg-white text-black shadow-sm">
-            Étudiant
-          </button>
-          <button id="tab-navette" onclick="switchTab('navette')" class="flex-1 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer text-gray-500 hover:text-black font-medium">
-            Navette
-          </button>
-          <button id="tab-conducteur" onclick="switchTab('conducteur')" class="flex-1 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer text-gray-500 hover:text-black font-medium">
-            Conducteur
-          </button>
+    <!-- Center stats (Desktop) -->
+    <div class="hidden lg:flex items-center gap-3 bg-gray-50 border border-gray-200 px-3.5 py-1.5 rounded-full text-xs">
+      <div class="flex items-center gap-1.5 text-black font-semibold">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>14 Véhicules en Ligne</span>
+      </div>
+      <span class="text-gray-300">|</span>
+      <span class="text-gray-600 font-medium">Takadoum ➔ CMC (9.4 km · 12 min)</span>
+      <span class="text-gray-300">|</span>
+      <span class="text-black font-bold">Tarif Fixe : 5 MAD</span>
+    </div>
+
+    <!-- Right: Wallet -->
+    <div class="flex items-center gap-2">
+      <button onclick="topUp()" class="bg-white hover:bg-gray-50 border border-gray-200 px-3.5 py-1.5 rounded-full shadow-xs text-xs font-bold text-black flex items-center gap-2 transition-all cursor-pointer">
+        <i data-lucide="wallet" class="w-3.5 h-3.5 text-gray-600"></i>
+        <span class="text-gray-500 font-medium">Solde:</span>
+        <span id="wallet-balance" class="text-black font-extrabold">25</span> MAD
+        <span class="w-4 h-4 rounded-full bg-black text-white flex items-center justify-center text-[10px] ml-0.5">+</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Webapp Workspace -->
+  <main class="flex-1 flex flex-col md:flex-row w-full h-[calc(100vh-61px)] min-h-[600px] overflow-hidden">
+    
+    <!-- LEFT PANEL: Booking & Operations Console -->
+    <section class="w-full md:w-[420px] lg:w-[460px] xl:w-[480px] bg-white border-r border-gray-200 flex-shrink-0 flex flex-col justify-between overflow-y-auto z-20 shadow-sm order-2 md:order-1">
+      <div class="p-4 sm:p-6 space-y-4">
+        
+        <!-- Segmented Control Role Switcher -->
+        <div>
+          <div class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2">Mode de Transport</div>
+          <div class="bg-[#F3F4F6] p-1 rounded-full flex items-center justify-between">
+            <button id="tab-etudiant" onclick="switchTab('etudiant')" class="flex-1 py-2 text-xs font-bold rounded-full transition-all cursor-pointer bg-white text-black shadow-sm">
+              Étudiant
+            </button>
+            <button id="tab-navette" onclick="switchTab('navette')" class="flex-1 py-2 text-xs font-bold rounded-full transition-all cursor-pointer text-gray-500 hover:text-black font-medium">
+              Navette
+            </button>
+            <button id="tab-conducteur" onclick="switchTab('conducteur')" class="flex-1 py-2 text-xs font-bold rounded-full transition-all cursor-pointer text-gray-500 hover:text-black font-medium">
+              Conducteur
+            </button>
+          </div>
         </div>
 
         <!-- MODULE A: ÉTUDIANT -->
         <div id="module-etudiant" class="space-y-4">
-          <!-- Input Box: Takadoum -> CMC -->
+          <!-- Input Box -->
           <div class="bg-[#F3F4F6] p-3.5 rounded-xl border border-gray-100 flex items-center justify-between">
             <div class="flex items-center gap-3 flex-1 min-w-0">
               <div class="flex flex-col items-center justify-center">
@@ -138,7 +103,7 @@
                 <div class="w-2.5 h-2.5 rounded-sm bg-black"></div>
               </div>
               <div class="flex-1 min-w-0 space-y-1">
-                <div class="text-xs font-semibold text-black truncate">Takadoum, Béni Mellal</div>
+                <div class="text-xs font-semibold text-black truncate" id="origin-display">Takadoum, Béni Mellal</div>
                 <div class="text-xs font-semibold text-black truncate">CMC : Cité des Métiers et des Compétences</div>
               </div>
             </div>
@@ -153,9 +118,8 @@
             <span class="text-xs font-medium text-gray-500">3 en route</span>
           </div>
 
-          <!-- Vertical list of available drivers -->
-          <div class="space-y-2 max-h-[220px] overflow-y-auto pr-0.5">
-            <!-- Driver 1 -->
+          <!-- Vertical Driver List -->
+          <div class="space-y-2 max-h-[220px] md:max-h-[340px] overflow-y-auto pr-0.5">
             <button onclick="selectDriver(0)" id="driver-0" class="w-full text-left p-3 rounded-xl transition-all flex items-center justify-between border cursor-pointer bg-black text-white border-black">
               <div class="flex items-center gap-3 min-w-0">
                 <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Amine" class="w-10 h-10 rounded-full object-cover border border-gray-200">
@@ -173,7 +137,6 @@
               </div>
             </button>
 
-            <!-- Driver 2 -->
             <button onclick="selectDriver(1)" id="driver-1" class="w-full text-left p-3 rounded-xl transition-all flex items-center justify-between border cursor-pointer bg-white hover:bg-gray-50 border-gray-200 text-black">
               <div class="flex items-center gap-3 min-w-0">
                 <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80" alt="Imane" class="w-10 h-10 rounded-full object-cover border border-gray-200">
@@ -191,7 +154,6 @@
               </div>
             </button>
 
-            <!-- Driver 3 -->
             <button onclick="selectDriver(2)" id="driver-2" class="w-full text-left p-3 rounded-xl transition-all flex items-center justify-between border cursor-pointer bg-white hover:bg-gray-50 border-gray-200 text-black">
               <div class="flex items-center gap-3 min-w-0">
                 <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Othmane" class="w-10 h-10 rounded-full object-cover border border-gray-200">
@@ -247,7 +209,6 @@
 
             <!-- Vehicle Top-Down -->
             <div class="max-w-[280px] mx-auto p-4 rounded-2xl border border-gray-200 bg-gray-50/50">
-              <!-- Front Row -->
               <div class="flex items-center justify-between mb-3 pb-3 border-b border-gray-200">
                 <div class="w-14 h-11 rounded-lg bg-gray-200 flex flex-col items-center justify-center text-gray-600">
                   <span class="text-[10px] font-bold">Chauffeur</span>
@@ -257,14 +218,12 @@
                 </button>
               </div>
 
-              <!-- Middle Row -->
               <div class="grid grid-cols-3 gap-2.5 mb-3">
                 <button onclick="selectSeat(2)" id="seat-2" class="h-11 rounded-lg flex items-center justify-center text-xs font-bold bg-white border border-black text-black hover:bg-gray-50">#02</button>
                 <button disabled class="h-11 rounded-lg flex items-center justify-center text-xs font-bold bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed">✕ #3</button>
                 <button onclick="selectSeat(4)" id="seat-4" class="h-11 rounded-lg flex items-center justify-center text-xs font-bold bg-black text-white border border-black">#04</button>
               </div>
 
-              <!-- Back Row -->
               <div class="grid grid-cols-4 gap-2">
                 <button disabled class="h-11 rounded-lg flex items-center justify-center text-[10px] font-bold bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed">✕ #5</button>
                 <button onclick="selectSeat(6)" id="seat-6" class="h-11 rounded-lg flex items-center justify-center text-xs font-bold bg-white border border-black text-black hover:bg-gray-50">#06</button>
@@ -330,85 +289,150 @@
       </div>
 
       <!-- Ownership Branding -->
-      <div class="pt-4 text-center">
+      <div class="p-4 border-t border-gray-100 text-center bg-gray-50/50">
         <p class="text-[11px] font-medium text-gray-400">
-          Architected by Mohamed &amp; Doaa • CMC 2026
+          Architected by Baakak • CMC 2026
         </p>
       </div>
-    </div>
+    </section>
 
-    <!-- Minimalist Receipt Modal -->
-    <div id="receipt-modal" class="fixed inset-0 z-50 items-end sm:items-center justify-center bg-black/50 backdrop-blur-xs p-0 sm:p-4 hidden flex">
-      <div class="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl space-y-5 border border-gray-100">
-        <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-          <div class="flex items-center gap-2">
-            <div class="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">✓</div>
-            <div>
-              <h4 class="text-base font-bold text-black leading-tight">Trajet Confirmé</h4>
-              <p class="text-xs text-gray-500" id="receipt-ticket">Ticket #CMC-8921</p>
-            </div>
-          </div>
-          <button onclick="closeReceipt()" class="p-1.5 rounded-full hover:bg-gray-100 text-gray-500 cursor-pointer">✕</button>
-        </div>
+    <!-- RIGHT PANEL: Full-Bleed Interactive Map -->
+    <section class="flex-1 relative w-full h-[320px] md:h-full bg-[#EAECEF] overflow-hidden order-1 md:order-2">
+      <div class="relative w-full h-full">
+        <!-- SVG Map -->
+        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <rect x="0" y="0" width="100" height="100" fill="#EAECEF" />
+          <polygon points="10,10 40,5 35,40 12,35" fill="#E4E7EB" />
+          <polygon points="65,5 95,8 90,30 60,25" fill="#E4E7EB" />
+          <polygon points="15,60 40,55 35,85 10,80" fill="#E4E7EB" />
+          <polygon points="50,65 85,60 80,95 45,90" fill="#E4E7EB" />
 
-        <div class="bg-[#F9FAFB] border border-gray-200 rounded-2xl p-5 flex flex-col items-center justify-center">
-          <div class="p-2 bg-white rounded-xl shadow-xs border border-gray-200">
-            <svg class="w-24 h-24" viewBox="0 0 25 25">
-              <rect x="0" y="0" width="7" height="7" fill="#000000" />
-              <rect x="1" y="1" width="5" height="5" fill="#ffffff" />
-              <rect x="2" y="2" width="3" height="3" fill="#000000" />
-              <rect x="18" y="0" width="7" height="7" fill="#000000" />
-              <rect x="19" y="1" width="5" height="5" fill="#ffffff" />
-              <rect x="20" y="2" width="3" height="3" fill="#000000" />
-              <rect x="0" y="18" width="7" height="7" fill="#000000" />
-              <rect x="1" y="19" width="5" height="5" fill="#ffffff" />
-              <rect x="2" y="20" width="3" height="3" fill="#000000" />
-              <rect x="9" y="2" width="2" height="2" fill="#000000" />
-              <rect x="13" y="1" width="2" height="3" fill="#000000" />
-              <rect x="10" y="6" width="3" height="2" fill="#000000" />
-              <rect x="2" y="9" width="2" height="4" fill="#000000" />
-              <rect x="9" y="10" width="4" height="4" fill="#000000" />
-              <rect x="15" y="9" width="3" height="2" fill="#000000" />
-              <rect x="19" y="10" width="4" height="2" fill="#000000" />
-              <rect x="10" y="16" width="2" height="3" fill="#000000" />
-              <rect x="14" y="14" width="3" height="3" fill="#000000" />
-              <rect x="18" y="15" width="2" height="4" fill="#000000" />
-              <rect x="9" y="21" width="3" height="3" fill="#000000" />
-              <rect x="14" y="20" width="2" height="3" fill="#000000" />
-              <rect x="18" y="21" width="4" height="2" fill="#000000" />
-              <rect x="22" y="18" width="2" height="2" fill="#000000" />
-            </svg>
-          </div>
-          <span class="text-xs font-semibold text-gray-500 mt-2">Présentez ce QR au départ</span>
-        </div>
+          <g stroke="#D1D5DB" stroke-width="0.75" stroke-linecap="round">
+            <line x1="70" y1="10" x2="95" y2="45" />
+            <line x1="60" y1="20" x2="88" y2="60" />
+            <line x1="75" y1="40" x2="98" y2="25" />
+            <line x1="55" y1="65" x2="85" y2="50" />
+            <line x1="20" y1="25" x2="45" y2="80" />
+            <line x1="10" y1="50" x2="50" y2="40" />
+          </g>
 
-        <div class="space-y-2 text-xs">
-          <div class="flex items-center justify-between py-1.5 border-b border-gray-100">
-            <span class="text-gray-500">Service</span>
-            <span class="font-bold text-black" id="receipt-service">Covoiturage Étudiant</span>
-          </div>
-          <div class="flex items-center justify-between py-1.5 border-b border-gray-100">
-            <span class="text-gray-500">Itinéraire</span>
-            <span class="font-bold text-black">Takadoum ➔ CMC</span>
-          </div>
-          <div class="flex items-center justify-between py-1.5 border-b border-gray-100">
-            <span class="text-gray-500">Véhicule</span>
-            <span class="font-bold text-black" id="receipt-vehicle">Dacia Sandero Stepway</span>
-          </div>
-          <div class="flex items-center justify-between py-1.5 border-b border-gray-100">
-            <span class="text-gray-500">Place assignée</span>
-            <span class="font-bold text-black bg-gray-100 px-2 py-0.5 rounded" id="receipt-seat">Place Avant</span>
-          </div>
-          <div class="flex items-center justify-between py-1.5">
-            <span class="text-gray-500">Montant payé</span>
-            <span class="font-black text-sm text-black">5 MAD</span>
+          <line x1="38" y1="8" x2="65" y2="68" stroke="#9CA3AF" stroke-width="1.6" stroke-dasharray="2, 1" />
+          <path d="M 88,18 L 81.5,32.5 L 69.0,44.0 L 65.5,50.0 L 59.5,60.5 L 48.5,77.0" fill="none" stroke="#9CA3AF" stroke-width="1.8" />
+          <path d="M 81.5,32.5 L 69.0,44.0 L 65.5,50.0 L 59.5,60.5 L 54.5,47.0 L 48.0,55.5 L 43.5,62.5 L 42.0,58.5" fill="none" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M 81.5,32.5 L 74.0,27.0 L 67.0,24.5 L 59.5,32.0 L 54.5,47.0 L 48.0,55.5 L 43.5,62.5 L 42.0,58.5" fill="none" stroke="#000000" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+
+        <!-- Moving Car Marker -->
+        <div id="car-marker" class="absolute transform -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all duration-100 z-10" style="left: 60%; top: 32%;">
+          <div class="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center shadow-md">
+            <i data-lucide="navigation" class="w-3.5 h-3.5 fill-white rotate-45"></i>
           </div>
         </div>
 
-        <button onclick="closeReceipt()" class="w-full py-3.5 px-6 rounded-lg bg-black hover:bg-gray-900 active:scale-[0.99] text-white font-bold text-sm transition-transform cursor-pointer">
-          Terminé
-        </button>
+        <!-- Origin Pin: Takadoum -->
+        <div class="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center cursor-pointer" onclick="changeOrigin('Takadoum')" style="left: 81.5%; top: 32.5%;">
+          <div class="w-4 h-4 rounded-full bg-black border-2 border-white shadow-md flex items-center justify-center">
+            <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+          </div>
+          <span class="mt-1 px-1.5 py-0.5 rounded bg-black text-white font-semibold text-[9px] shadow-sm whitespace-nowrap">Takadoum</span>
+        </div>
+
+        <!-- Marjane Stop -->
+        <div class="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 hidden sm:flex flex-col items-center cursor-pointer" onclick="changeOrigin('Marjane Market')" style="left: 75%; top: 20%;">
+          <div class="w-3.5 h-3.5 rounded-full bg-gray-700 border-2 border-white shadow-sm flex items-center justify-center"></div>
+          <span class="mt-1 px-1.5 py-0.5 rounded bg-white text-gray-700 font-semibold text-[9px] shadow-xs whitespace-nowrap border border-gray-200">Marjane</span>
+        </div>
+
+        <!-- Destination Pin: CMC Mghila -->
+        <div class="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center" style="left: 42.0%; top: 58.5%;">
+          <div class="w-5 h-5 rounded-sm bg-black border-2 border-white shadow-lg flex items-center justify-center ring-4 ring-black/10">
+            <div class="w-2 h-2 rounded-sm bg-white"></div>
+          </div>
+          <span class="mt-1 px-2.5 py-1 rounded bg-black text-white font-extrabold text-[10px] shadow-md whitespace-nowrap">CMC Mghila</span>
+        </div>
+
+        <!-- Floating Duration Badge -->
+        <div class="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-md border border-gray-200/80 flex items-center gap-2 text-xs text-black font-semibold z-10">
+          <i data-lucide="clock" class="w-3.5 h-3.5 text-black"></i>
+          <span>12 min · 9.4 km</span>
+          <span class="text-gray-300">|</span>
+          <span class="text-gray-500 font-medium">Contournement P3222</span>
+        </div>
       </div>
+    </section>
+  </main>
+
+  <!-- Minimalist Receipt Modal -->
+  <div id="receipt-modal" class="fixed inset-0 z-50 items-center justify-center bg-black/50 backdrop-blur-xs p-4 hidden flex">
+    <div class="w-full max-w-md bg-white rounded-3xl p-6 shadow-2xl space-y-5 border border-gray-100">
+      <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">✓</div>
+          <div>
+            <h4 class="text-base font-bold text-black leading-tight">Trajet Confirmé</h4>
+            <p class="text-xs text-gray-500" id="receipt-ticket">Ticket #CMC-8921</p>
+          </div>
+        </div>
+        <button onclick="closeReceipt()" class="p-1.5 rounded-full hover:bg-gray-100 text-gray-500 cursor-pointer">✕</button>
+      </div>
+
+      <div class="bg-[#F9FAFB] border border-gray-200 rounded-2xl p-5 flex flex-col items-center justify-center">
+        <div class="p-2 bg-white rounded-xl shadow-xs border border-gray-200">
+          <svg class="w-24 h-24" viewBox="0 0 25 25">
+            <rect x="0" y="0" width="7" height="7" fill="#000000" />
+            <rect x="1" y="1" width="5" height="5" fill="#ffffff" />
+            <rect x="2" y="2" width="3" height="3" fill="#000000" />
+            <rect x="18" y="0" width="7" height="7" fill="#000000" />
+            <rect x="19" y="1" width="5" height="5" fill="#ffffff" />
+            <rect x="20" y="2" width="3" height="3" fill="#000000" />
+            <rect x="0" y="18" width="7" height="7" fill="#000000" />
+            <rect x="1" y="19" width="5" height="5" fill="#ffffff" />
+            <rect x="2" y="20" width="3" height="3" fill="#000000" />
+            <rect x="9" y="2" width="2" height="2" fill="#000000" />
+            <rect x="13" y="1" width="2" height="3" fill="#000000" />
+            <rect x="10" y="6" width="3" height="2" fill="#000000" />
+            <rect x="2" y="9" width="2" height="4" fill="#000000" />
+            <rect x="9" y="10" width="4" height="4" fill="#000000" />
+            <rect x="15" y="9" width="3" height="2" fill="#000000" />
+            <rect x="19" y="10" width="4" height="2" fill="#000000" />
+            <rect x="10" y="16" width="2" height="3" fill="#000000" />
+            <rect x="14" y="14" width="3" height="3" fill="#000000" />
+            <rect x="18" y="15" width="2" height="4" fill="#000000" />
+            <rect x="9" y="21" width="3" height="3" fill="#000000" />
+            <rect x="14" y="20" width="2" height="3" fill="#000000" />
+            <rect x="18" y="21" width="4" height="2" fill="#000000" />
+            <rect x="22" y="18" width="2" height="2" fill="#000000" />
+          </svg>
+        </div>
+        <span class="text-xs font-semibold text-gray-500 mt-2">Présentez ce QR au départ</span>
+      </div>
+
+      <div class="space-y-2 text-xs">
+        <div class="flex items-center justify-between py-1.5 border-b border-gray-100">
+          <span class="text-gray-500">Service</span>
+          <span class="font-bold text-black" id="receipt-service">Covoiturage Étudiant</span>
+        </div>
+        <div class="flex items-center justify-between py-1.5 border-b border-gray-100">
+          <span class="text-gray-500">Itinéraire</span>
+          <span class="font-bold text-black">Takadoum ➔ CMC</span>
+        </div>
+        <div class="flex items-center justify-between py-1.5 border-b border-gray-100">
+          <span class="text-gray-500">Véhicule</span>
+          <span class="font-bold text-black" id="receipt-vehicle">Dacia Sandero Stepway</span>
+        </div>
+        <div class="flex items-center justify-between py-1.5 border-b border-gray-100">
+          <span class="text-gray-500">Place assignée</span>
+          <span class="font-bold text-black bg-gray-100 px-2 py-0.5 rounded" id="receipt-seat">Place Avant</span>
+        </div>
+        <div class="flex items-center justify-between py-1.5">
+          <span class="text-gray-500">Montant payé</span>
+          <span class="font-black text-sm text-black">5 MAD</span>
+        </div>
+      </div>
+
+      <button onclick="closeReceipt()" class="w-full py-3.5 px-6 rounded-lg bg-black hover:bg-gray-900 active:scale-[0.99] text-white font-bold text-sm transition-transform cursor-pointer">
+        Terminé
+      </button>
     </div>
   </div>
 
@@ -429,10 +453,10 @@
         const btn = document.getElementById('tab-' + m);
         const mod = document.getElementById('module-' + m);
         if (m === mode) {
-          btn.className = "flex-1 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer bg-white text-black shadow-sm";
+          btn.className = "flex-1 py-2 text-xs font-bold rounded-full transition-all cursor-pointer bg-white text-black shadow-sm";
           mod.classList.remove('hidden');
         } else {
-          btn.className = "flex-1 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer text-gray-500 hover:text-black font-medium";
+          btn.className = "flex-1 py-2 text-xs font-bold rounded-full transition-all cursor-pointer text-gray-500 hover:text-black font-medium";
           mod.classList.add('hidden');
         }
       });
@@ -470,6 +494,10 @@
         }
       });
       document.getElementById('navette-cta-text').innerText = "Réserver Siège #0" + num + " • 5 MAD";
+    }
+
+    function changeOrigin(name) {
+      document.getElementById('origin-display').innerText = name + ", Béni Mellal";
     }
 
     function confirmStudentRide() {
