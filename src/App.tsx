@@ -37,9 +37,9 @@ export default function App() {
   const [rides, setRides] = useState<DriverRide[]>([
     {
       id: 'ride-1',
-      driverName: 'Amine Benchekroun',
+      driverName: "L'Morphine",
       driverRole: 'Stagiaire CMC',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+      avatar: '/assets/aistudio/image_cb78d06c.png',
       carModel: 'Dacia Sandero Stepway',
       carColor: 'Gris',
       rating: 4.9,
@@ -55,9 +55,9 @@ export default function App() {
     },
     {
       id: 'ride-2',
-      driverName: 'Dr. Imane Laroussi',
+      driverName: 'Oum Kalthoum',
       driverRole: 'Formatrice CMC',
-      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80',
+      avatar: '/assets/aistudio/image_e21eb326.png',
       carModel: 'Peugeot 208',
       carColor: 'Blanc',
       rating: 5.0,
@@ -73,9 +73,9 @@ export default function App() {
     },
     {
       id: 'ride-3',
-      driverName: 'Othmane Radi',
+      driverName: 'Kanye West',
       driverRole: 'Stagiaire CMC',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+      avatar: '/assets/aistudio/image_059dcb89.png',
       carModel: 'Renault Clio 4',
       carColor: 'Bleu',
       rating: 4.8,
