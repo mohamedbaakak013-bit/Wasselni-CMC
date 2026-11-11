@@ -4,19 +4,36 @@ import { UberMap } from './components/UberMap';
 import { StudentModule } from './components/StudentModule';
 import { NavetteModule } from './components/NavetteModule';
 import { DriverModule } from './components/DriverModule';
-import { UberReceiptModal } from './components/UberReceiptModal';
-import { Wallet, Plus, Check, MapPin, Activity, ShieldCheck, Compass } from 'lucide-react';
+import { LoginSplash } from './components/LoginSplash';
+import { ActiveRideView } from './components/ActiveRideView';
+import { WalletTopupSheet } from './components/WalletTopupSheet';
+import { SOSModal } from './components/SOSModal';
+import { Wallet, Check, LogOut } from 'lucide-react';
 
 export default function App() {
+  // FLOW 1: Auth state - Initially false as required
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<{ name: string; email: string } | null>(null);
+
+  // App & Transportation State
   const [currentMode, setCurrentMode] = useState<AppMode>('etudiant');
   const [balance, setBalance] = useState<number>(25);
   const [selectedOrigin, setSelectedOrigin] = useState<string>('Takadoum');
   const [selectedRideId, setSelectedRideId] = useState<string>('ride-1');
-  const [activePass, setActivePass] = useState<BoardingPassData | null>(null);
-  const [showToast, setShowToast] = useState<string | null>(null);
-  const [showRechargeModal, setShowRechargeModal] = useState<boolean>(false);
 
-  // Available drivers along the corridor
+  // FLOW 2: Active Ride View (Post-Booking State)
+  const [activeRide, setActiveRide] = useState<BoardingPassData | null>(null);
+
+  // FLOW 3: Wallet Recharge Bottom Sheet
+  const [showRechargeSheet, setShowRechargeSheet] = useState<boolean>(false);
+
+  // FLOW 4: SOS Emergency Modal
+  const [showSOSModal, setShowSOSModal] = useState<boolean>(false);
+
+  // Toast System
+  const [showToast, setShowToast] = useState<string | null>(null);
+
+  // Available drivers along the Takadoum ➔ CMC corridor
   const [rides, setRides] = useState<DriverRide[]>([
     {
       id: 'ride-1',
@@ -79,18 +96,26 @@ export default function App() {
     setTimeout(() => setShowToast(null), 3000);
   };
 
+  // FLOW 1: Auth Handler
+  const handleLoginSuccess = (user: { name: string; email: string }) => {
+    setCurrentUser(user);
+    setIsAuthenticated(true);
+    triggerToast(`Bienvenue, ${user.name}`);
+  };
+
+  // FLOW 2: Booking confirmation triggers full-screen Active Ride View
   const handleConfirmStudent = () => {
     const ride = rides.find((r) => r.id === selectedRideId) || rides[0];
     if (balance < 5) {
       triggerToast('Solde insuffisant (Rechargez votre solde)');
-      setShowRechargeModal(true);
+      setShowRechargeSheet(true);
       return;
     }
 
     setBalance((prev) => prev - 5);
-    setActivePass({
+    setActiveRide({
       ticketId: `CMC-${Math.floor(1000 + Math.random() * 9000)}`,
-      passengerName: 'Étudiant CMC',
+      passengerName: currentUser?.name || 'Étudiant CMC',
       serviceType: 'Covoiturage Étudiant',
       origin: selectedOrigin,
       destination: 'CMC Mghila',
@@ -107,20 +132,20 @@ export default function App() {
   const handleConfirmNavette = (seatId: number) => {
     if (balance < 5) {
       triggerToast('Solde insuffisant (Rechargez votre solde)');
-      setShowRechargeModal(true);
+      setShowRechargeSheet(true);
       return;
     }
 
     setBalance((prev) => prev - 5);
-    setActivePass({
+    setActiveRide({
       ticketId: `NAV-${Math.floor(2000 + Math.random() * 8000)}`,
-      passengerName: 'Étudiant CMC',
+      passengerName: currentUser?.name || 'Étudiant CMC',
       serviceType: 'Smart Navette CMC',
       origin: selectedOrigin,
       destination: 'CMC Mghila',
       departureTime: 'Dans 4 min',
       seatInfo: `Siège #0${seatId}`,
-      driverOrVehicle: 'Grand Taxi Express #03',
+      driverOrVehicle: 'Grand Taxi Express #03 (Mercedes 240)',
       priceMad: 5,
       qrMatrix: [],
       timestamp: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
@@ -131,7 +156,7 @@ export default function App() {
   const handlePublishDriver = (seats: number, time: string) => {
     const newRide: DriverRide = {
       id: `ride-${Date.now()}`,
-      driverName: 'Vous (Conducteur CMC)',
+      driverName: currentUser?.name || 'Vous (Conducteur CMC)',
       driverRole: 'Stagiaire Conducteur',
       avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
       carModel: 'Votre Véhicule',
@@ -151,6 +176,62 @@ export default function App() {
     setRides((prev) => [newRide, ...prev]);
     triggerToast(`Trajet publié avec ${seats} places disponibles`);
   };
+
+  // FLOW 3: Top-up Handler
+  const handleTopup = (amount: number, method: string) => {
+    setBalance((prev) => prev + amount);
+    setShowRechargeSheet(false);
+    triggerToast(`Solde rechargé : +${amount} MAD via ${method}`);
+  };
+
+  // FLOW 4: Share Route Handler
+  const handleShareRoute = () => {
+    const shareUrl = `https://wasselni-cmc.ma/track/${activeRide?.ticketId || 'cmc-8921'}`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl).catch(() => {});
+    }
+    triggerToast('Lien de suivi copié dans le presse-papier');
+  };
+
+  // FLOW 1: If not authenticated, show the Campus Login Splash screen
+  if (!isAuthenticated) {
+    return <LoginSplash onLoginSuccess={handleLoginSuccess} />;
+  }
+
+  // FLOW 2: If an active ride is booked, show the full-screen Active Ride View
+  if (activeRide) {
+    return (
+      <>
+        {/* Toast Notification */}
+        {showToast && (
+          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[60] bg-black text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-xl flex items-center gap-2 animate-fade-in border border-white/10">
+            <Check className="w-4 h-4 stroke-[2.5]" />
+            <span>{showToast}</span>
+          </div>
+        )}
+
+        <ActiveRideView
+          rideData={activeRide}
+          onFinishRide={() => {
+            setActiveRide(null);
+            triggerToast('Course terminée · Merci d\'avoir utilisé Wasselni CMC');
+          }}
+          onOpenSOS={() => setShowSOSModal(true)}
+          onShareRoute={handleShareRoute}
+        />
+
+        {/* SOS Emergency Modal */}
+        <SOSModal
+          isOpen={showSOSModal}
+          onClose={() => setShowSOSModal(false)}
+          onCallSuccess={(service) => {
+            setShowSOSModal(false);
+            triggerToast(`Appel d'urgence initié : ${service}`);
+          }}
+        />
+      </>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F3F4F6] text-black flex flex-col selection:bg-black selection:text-white">
@@ -200,9 +281,10 @@ export default function App() {
 
         {/* Right: Wallet Balance Pill & Quick Top-Up */}
         <div className="flex items-center gap-2">
+          {/* FLOW 3: Clicking Solde opens the Wallet Top-Up Sheet */}
           <button
-            onClick={() => setShowRechargeModal(true)}
-            className="bg-white hover:bg-gray-50 border border-gray-200 px-3.5 py-1.5 rounded-full shadow-xs text-xs font-bold text-black flex items-center gap-2 transition-all cursor-pointer"
+            onClick={() => setShowRechargeSheet(true)}
+            className="bg-white hover:bg-gray-50 border border-gray-200 px-3.5 py-1.5 rounded-full shadow-xs text-xs font-bold text-black flex items-center gap-2 transition-all cursor-pointer active:scale-95"
             title="Recharger le portefeuille étudiant"
           >
             <Wallet className="w-3.5 h-3.5 text-gray-600" />
@@ -211,6 +293,18 @@ export default function App() {
             <span className="w-4 h-4 rounded-full bg-black text-white flex items-center justify-center text-[10px] ml-0.5">
               +
             </span>
+          </button>
+
+          {/* User Signout Button */}
+          <button
+            onClick={() => {
+              setIsAuthenticated(false);
+              triggerToast('Déconnexion effectuée');
+            }}
+            className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-black cursor-pointer transition-colors"
+            title="Se déconnecter"
+          >
+            <LogOut className="w-4 h-4" />
           </button>
         </div>
       </header>
@@ -286,7 +380,7 @@ export default function App() {
           {/* Ownership Branding: Subtle text label at bottom */}
           <div className="p-4 border-t border-gray-100 text-center bg-gray-50/50">
             <p className="text-[11px] font-medium text-gray-400">
-              Architected by Baakak • CMC 2026
+              Architected by Mohamed & Doaa • CMC 2026
             </p>
           </div>
         </section>
@@ -305,58 +399,23 @@ export default function App() {
         </section>
       </main>
 
-      {/* Confirmation Receipt Modal */}
-      <UberReceiptModal
-        pass={activePass}
-        onClose={() => setActivePass(null)}
+      {/* FLOW 3: Wallet Recharge Bottom Sheet */}
+      <WalletTopupSheet
+        isOpen={showRechargeSheet}
+        balance={balance}
+        onClose={() => setShowRechargeSheet(false)}
+        onTopup={handleTopup}
       />
 
-      {/* Recharge Wallet Modal */}
-      {showRechargeModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
-          <div className="bg-white rounded-2xl p-6 max-w-xs w-full shadow-2xl border border-gray-100 space-y-4 animate-scale-up">
-            <div className="flex items-center justify-between">
-              <h4 className="text-base font-bold text-black">
-                Recharger le Solde
-              </h4>
-              <span className="text-xs font-semibold px-2 py-0.5 bg-gray-100 rounded text-gray-700">
-                Pass Étudiant
-              </span>
-            </div>
-
-            <p className="text-xs text-gray-500">
-              Solde actuel : <strong className="text-black">{balance} MAD</strong>
-            </p>
-
-            <div className="grid grid-cols-3 gap-2">
-              {[10, 20, 50].map((amt) => (
-                <button
-                  key={amt}
-                  onClick={() => {
-                    setBalance((prev) => prev + amt);
-                    setShowRechargeModal(false);
-                    triggerToast(`+${amt} MAD ajoutés au solde`);
-                  }}
-                  className="py-2.5 rounded-lg bg-[#F3F4F6] hover:bg-black hover:text-white text-xs font-bold text-black border border-gray-200 transition-colors cursor-pointer"
-                >
-                  +{amt} MAD
-                </button>
-              ))}
-            </div>
-
-            <p className="text-[11px] text-gray-400 text-center">
-              Paiement instantané sécurisé par pass CMC
-            </p>
-
-            <button
-              onClick={() => setShowRechargeModal(false)}
-              className="w-full py-2.5 text-xs font-semibold text-gray-500 hover:text-black cursor-pointer"
-            >
-              Annuler
-            </button>
-          </div>
-        </div>
-      )}
+      {/* FLOW 4: SOS Emergency Modal */}
+      <SOSModal
+        isOpen={showSOSModal}
+        onClose={() => setShowSOSModal(false)}
+        onCallSuccess={(service) => {
+          setShowSOSModal(false);
+          triggerToast(`Appel d'urgence initié : ${service}`);
+        }}
+      />
     </div>
   );
 }
