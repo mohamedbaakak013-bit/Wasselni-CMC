@@ -40,7 +40,7 @@ export const LoginSplash: React.FC<LoginSplashProps> = ({ onLoginSuccess }) => {
         </div>
         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-gray-200 text-[11px] font-semibold text-gray-700 shadow-xs">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          <span>Campus Béni Mellal</span>
+          <span>Campus CMC</span>
         </div>
       </div>
 
@@ -133,7 +133,7 @@ export const LoginSplash: React.FC<LoginSplashProps> = ({ onLoginSuccess }) => {
       {/* Floating Signature */}
       <footer className="w-full text-center pb-2">
         <p className="text-[11px] font-medium text-gray-400">
-          Architected by Mohamed & Doaa • CMC 2026
+          Architected by Baakak Lking Himself • Campus CMC 2027
         </p>
       </footer>
     </div>

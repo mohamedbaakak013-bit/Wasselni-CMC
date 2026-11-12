@@ -36,10 +36,10 @@ export const FounderModal: React.FC<FounderModalProps> = ({ isOpen, onClose }) =
         </div>
 
         <h3 className="text-2xl font-bold text-white font-heading tracking-tight">
-          Architected by Baakak
+          Architected by Baakak Lking Himself
         </h3>
         <p className="text-xs font-mono text-cyan-400 mt-0.5">
-          CMC 2026 ✦ Cité des Métiers et des Compétences
+          CMC 2027 ✦ Cité des Métiers et des Compétences
         </p>
 
         {/* The Core Mission */}

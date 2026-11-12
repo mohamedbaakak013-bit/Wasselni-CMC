@@ -256,11 +256,11 @@ export default function App() {
                 Wasselni CMC
               </span>
               <span className="hidden sm:inline-block text-[11px] font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-700">
-                Béni Mellal
+                Campus CMC
               </span>
             </div>
             <p className="hidden md:block text-xs text-gray-500 font-medium">
-              Plateforme de covoiturage & navettes · Campus CMC Mghila
+              Plateforme de covoiturage & navettes · Campus CMC
             </p>
           </div>
         </div>
@@ -380,7 +380,7 @@ export default function App() {
           {/* Ownership Branding: Subtle text label at bottom */}
           <div className="p-4 border-t border-gray-100 text-center bg-gray-50/50">
             <p className="text-[11px] font-medium text-gray-400">
-              Architected by Mohamed & Doaa • CMC 2026
+              Architected by Baakak Lking Himself • Campus CMC 2027
             </p>
           </div>
         </section>

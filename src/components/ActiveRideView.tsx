@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Share2, AlertTriangle, CheckCircle, Navigation, Shield, ArrowLeft } from 'lucide-react';
+import { Share2, AlertTriangle, CheckCircle, Navigation, Shield, ArrowLeft, MessageCircle } from 'lucide-react';
 import { BoardingPassData } from '../types';
+import { RideChat } from './RideChat';
 
 interface ActiveRideViewProps {
   rideData: BoardingPassData;
@@ -17,6 +18,7 @@ export const ActiveRideView: React.FC<ActiveRideViewProps> = ({
 }) => {
   const [etaMinutes, setEtaMinutes] = useState(3);
   const [etaSeconds, setEtaSeconds] = useState(48);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -54,15 +56,30 @@ export const ActiveRideView: React.FC<ActiveRideViewProps> = ({
           </div>
         </div>
 
-        {/* ETA Pill */}
-        <div className="bg-black text-white px-3.5 py-1.5 rounded-full flex items-center gap-2 shadow-sm text-xs font-bold">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>
-            Arrive dans {etaMinutes} min{' '}
-            <span className="opacity-70 font-normal">
-              ({etaSeconds < 10 ? `0${etaSeconds}` : etaSeconds}s)
+        {/* Actions & ETA */}
+        <div className="flex items-center gap-2">
+          {/* Chat with Driver Button */}
+          <button
+            type="button"
+            onClick={() => setIsChatOpen(true)}
+            className="h-8 px-3 rounded-full bg-gray-100 hover:bg-gray-200 border border-gray-200 text-black text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors"
+            title="Chat with Driver"
+          >
+            <MessageCircle className="w-3.5 h-3.5" />
+            <span className="inline">Chat with Driver</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          </button>
+
+          {/* ETA Pill */}
+          <div className="bg-black text-white px-3.5 py-1.5 rounded-full flex items-center gap-2 shadow-sm text-xs font-bold">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>
+              Arrive dans {etaMinutes} min{' '}
+              <span className="opacity-70 font-normal">
+                ({etaSeconds < 10 ? `0${etaSeconds}` : etaSeconds}s)
+              </span>
             </span>
-          </span>
+          </div>
         </div>
       </header>
 
@@ -186,6 +203,22 @@ export const ActiveRideView: React.FC<ActiveRideViewProps> = ({
             <span className="text-gray-300">➔</span>
             <span className="font-bold text-black">{rideData.destination}</span>
           </div>
+
+          {/* Real-time Pickup Coordination Chat CTA */}
+          <button
+            type="button"
+            onClick={() => setIsChatOpen(true)}
+            className="w-full py-2.5 px-3.5 rounded-xl bg-black hover:bg-gray-800 text-white text-xs font-bold flex items-center justify-between cursor-pointer transition-all active:scale-[0.99] shadow-xs"
+          >
+            <div className="flex items-center gap-2">
+              <MessageCircle className="w-4 h-4 text-white" />
+              <span>Chat with Driver</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Coordonner le point</span>
+            </div>
+          </button>
         </div>
 
         {/* FLOW 4: Safety Center Floating Bottom Row */}
@@ -227,9 +260,31 @@ export const ActiveRideView: React.FC<ActiveRideViewProps> = ({
       {/* Floating Signature */}
       <footer className="w-full text-center pb-4 pt-2">
         <p className="text-[11px] font-medium text-gray-400">
-          Architected by Mohamed & Doaa • CMC 2026
+          Architected by Baakak Lking Himself • Campus CMC 2027
         </p>
       </footer>
+
+      {/* RideChat Messaging Modal Overlay */}
+      <RideChat
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+        driverName={rideData.driverOrVehicle.split(' (')[0]}
+        driverAvatar={
+          rideData.driverOrVehicle.toLowerCase().includes('kanye')
+            ? '/assets/aistudio/image_059dcb89.png'
+            : rideData.driverOrVehicle.toLowerCase().includes('oum')
+            ? '/assets/aistudio/image_e21eb326.png'
+            : rideData.driverOrVehicle.toLowerCase().includes('morphine')
+            ? '/assets/aistudio/image_cb78d06c.png'
+            : undefined
+        }
+        carModel={
+          rideData.driverOrVehicle.includes('(')
+            ? rideData.driverOrVehicle.split('(')[1].replace(')', '')
+            : 'Véhicule CMC'
+        }
+        originName={rideData.origin}
+      />
     </div>
   );
 };
